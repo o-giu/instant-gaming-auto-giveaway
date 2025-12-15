@@ -1,4 +1,4 @@
-# 🎁 Giu - IG Auto Giveaway
+# 🎁 IG Auto Giveaway
 
 Créditos da lista de Sorteio [aqui](https://github.com/enzomtpYT/InstantGamingGiveawayList)
 
