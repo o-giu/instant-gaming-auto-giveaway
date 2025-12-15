@@ -1,5 +1,7 @@
 # 🎁 Giu - IG Auto Giveaway
 
+Créditos da lista de Sorteio [aqui](https://github.com/enzomtpYT/InstantGamingGiveawayList)
+
 ## 📋 Visão Geral
 
 Este script automatiza a participação nos sorteios (Giveaways) do site Instant Gaming. Ele navega automaticamente por uma lista de sorteios, completa as tarefas de redes sociais, clica no botão de participar e gerencia o status de cada sorteio (participando, pendente ou encerrado).
