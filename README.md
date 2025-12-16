@@ -32,7 +32,7 @@
 
 | Feature / Funcionalidade | Description / Descrição |
 | :--- | :--- |
-| **🤖 Smart Automation**<br>*(Automação Inteligente)* | 🇺🇸 Auto-follows (Twitch/IG), closes pop-ups, and checks status.<br>🇧🇷 Segue auto (Twitch/IG), fecha pop-ups e checa status. |
+| **🤖 Smart Automation**<br>*(Automação Inteligente)* | 🇺🇸 It automatically clicks on the social media buttons for the giveaways, and checks status.<br>🇧🇷 Ele clica automaticamente nos botões das redes sociais para os sorteios e verifica o status. |
 | **📝 List Management**<br>*(Gerenciamento de Lista)* | 🇺🇸 Add/Remove links with `(+)` `(-)`. Progress is saved.<br>🇧🇷 Adicione/Remova links com `(+)` `(-)`. O progresso é salvo. |
 | **🔒 Persistence**<br>*(Persistência)* | 🇺🇸 Database is saved in the browser. You won't lose data.<br>🇧🇷 Banco de dados salvo no navegador. Você não perde dados. |
 
