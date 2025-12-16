@@ -2,8 +2,10 @@
 // @name        Giu - IG Auto Giveaway
 // @match       https://www.instant-gaming.com/*
 // @grant       none
-// @version     6.0
+// @version     7.0
 // @author      Giu
+// @downloadURL  https://raw.githubusercontent.com/o-giu/instant-gaming-auto-giveaway/main/codigo.js
+// @updateURL    https://raw.githubusercontent.com/o-giu/instant-gaming-auto-giveaway/main/codigo.js
 // ==/UserScript==
 
 (function() {
@@ -123,6 +125,63 @@
         localStorage.setItem('ig_links', JSON.stringify(links));
     }
 
+    let currentLang = localStorage.getItem('ig_lang') || 'pt';
+
+    const trans = {
+        pt: {
+            ready: "Pronto para começar",
+            running: "🚀 <strong>Rodando...</strong><br>Link {idx} de {total}",
+            paused: "⏸️ <strong>Pausado</strong><br>Próximo: {idx}/{total}",
+            finished: "✅ <strong>Concluído!</strong><br>Todos os {total} links visitados.",
+            start: "INICIAR",
+            pause: "PAUSAR",
+            reset: "RESETAR",
+            list: "📋 LISTA",
+            end: "FIM",
+            ended: "Terminou",
+            prompt_add: "Digite o link do sorteio:",
+            prompt_remove: "Digite o número para remover (1 a {total}):",
+            invalid_link: "Link inválido!",
+            going_to: "🔄 Indo para link {idx}...",
+            closed: "⛔ Sorteio encerrado.",
+            checking: "⚡ Verificando tarefas...",
+            confirming: "⚡ Confirmando status...",
+            success: "✅ Confirmado/Participado",
+            searching: "🔎 Tentando participar...",
+            flag: "🇧🇷"
+        },
+        en: {
+            ready: "Ready to start",
+            running: "🚀 <strong>Running...</strong><br>Link {idx} of {total}",
+            paused: "⏸️ <strong>Paused</strong><br>Next: {idx}/{total}",
+            finished: "✅ <strong>Finished!</strong><br>All {total} links visited.",
+            start: "START",
+            pause: "PAUSE",
+            reset: "RESET",
+            list: "📋 LIST",
+            end: "END",
+            ended: "Ended",
+            prompt_add: "Enter giveaway link:",
+            prompt_remove: "Enter number to remove (1 to {total}):",
+            invalid_link: "Invalid link!",
+            going_to: "🔄 Going to link {idx}...",
+            closed: "⛔ Giveaway ended.",
+            checking: "⚡ Checking tasks...",
+            confirming: "⚡ Confirming status...",
+            success: "✅ Confirmed/Participated",
+            searching: "🔎 Trying to participate...",
+            flag: "🇺🇸"
+        }
+    };
+
+    function t(key, replacements = {}) {
+        let text = trans[currentLang][key] || key;
+        for (const [k, v] of Object.entries(replacements)) {
+            text = text.replace(`{${k}}`, v);
+        }
+        return text;
+    }
+
     const style = document.createElement('style');
     style.innerHTML = `
         #ig-panel-container {
@@ -181,6 +240,8 @@
             font-size: 14px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
+        .header-buttons { display: flex; gap: 5px; }
+
         .header button {
             background: rgba(0,0,0,0.2);
             border: none;
@@ -306,19 +367,22 @@
         <div class="min-icon">🎁</div>
         <div class="header">
             <span>Giu - IG Auto Giveaway</span>
-            <button id="ig-minimize-btn" title="Minimizar">_</button>
+            <div class="header-buttons">
+                <button id="ig-lang-btn">${t('flag')}</button>
+                <button id="ig-minimize-btn" title="Minimizar">_</button>
+            </div>
         </div>
         <div class="content">
             <div class="progress-container">
                 <div class="progress-bar" id="ig-progress"></div>
             </div>
             <div class="status-info" id="ig-status">
-                Pronto para começar
+                ${t('ready')}
             </div>
             <div class="controls">
-                <button class="btn btn-start" id="ig-btn-start">INICIAR</button>
-                <button class="btn btn-reset" id="ig-btn-reset">RESETAR</button>
-                <button class="btn btn-list" id="ig-btn-toggle">📋 LISTA</button>
+                <button class="btn btn-start" id="ig-btn-start">${t('start')}</button>
+                <button class="btn btn-reset" id="ig-btn-reset">${t('reset')}</button>
+                <button class="btn btn-list" id="ig-btn-toggle">${t('list')}</button>
             </div>
             <div id="ig-list-container"></div>
             <div class="edit-controls" id="ig-edit-controls" style="display:none;">
@@ -330,6 +394,7 @@
     document.body.appendChild(container);
 
     const btnMinimize = document.getElementById('ig-minimize-btn');
+    const btnLang = document.getElementById('ig-lang-btn');
     const progressBar = document.getElementById('ig-progress');
     const statusDiv = document.getElementById('ig-status');
     const btnStart = document.getElementById('ig-btn-start');
@@ -359,6 +424,20 @@
         localStorage.setItem('ig_minimized', 'true');
     };
 
+    btnLang.onclick = function(e) {
+        e.stopPropagation();
+        currentLang = currentLang === 'pt' ? 'en' : 'pt';
+        localStorage.setItem('ig_lang', currentLang);
+        btnLang.innerText = t('flag');
+        refreshTexts();
+        updateUI();
+    };
+
+    function refreshTexts() {
+        btnReset.innerText = t('reset');
+        btnToggle.innerText = t('list');
+    }
+
     btnToggle.onclick = function(e) {
         e.stopPropagation();
         listContainer.classList.toggle('visible');
@@ -371,20 +450,20 @@
 
     btnAdd.onclick = function(e) {
         e.stopPropagation();
-        const url = prompt("Digite o link do sorteio:");
+        const url = prompt(t('prompt_add'));
         if (url && url.includes('instant-gaming.com')) {
             links.push(url);
             localStorage.setItem('ig_links', JSON.stringify(links));
             updateListUI();
             updateUI();
         } else if (url) {
-            alert("Link inválido!");
+            alert(t('invalid_link'));
         }
     };
 
     btnRemove.onclick = function(e) {
         e.stopPropagation();
-        const num = prompt(`Digite o número para remover (1 a ${links.length}):`);
+        const num = prompt(t('prompt_remove', {total: links.length}));
         const idx = parseInt(num) - 1;
         if (idx >= 0 && idx < links.length) {
             links.splice(idx, 1);
@@ -410,7 +489,7 @@
     }
 
     function formatTime(seconds) {
-        if (seconds <= 0) return "Terminou";
+        if (seconds <= 0) return t('ended');
         const d = Math.floor(seconds / 86400);
         const h = Math.floor((seconds % 86400) / 3600);
         const m = Math.floor((seconds % 3600) / 60);
@@ -477,20 +556,20 @@
         progressBar.style.width = `${progress}%`;
 
         if (currentIndex >= total) {
-             statusDiv.innerHTML = `✅ <strong>Concluído!</strong><br>Todos os ${total} links visitados.`;
-             btnStart.innerText = 'FIM';
+             statusDiv.innerHTML = t('finished', {total: total});
+             btnStart.innerText = t('end');
              btnStart.disabled = true;
              btnStart.classList.remove('paused');
              return;
         }
 
         if (isRunning) {
-            statusDiv.innerHTML = `🚀 <strong>Rodando...</strong><br>Link ${currentIndex + 1} de ${total}`;
-            btnStart.innerText = 'PAUSAR';
+            statusDiv.innerHTML = t('running', {idx: currentIndex + 1, total: total});
+            btnStart.innerText = t('pause');
             btnStart.classList.add('paused');
         } else {
-            statusDiv.innerHTML = `⏸️ <strong>Pausado</strong><br>Próximo: ${currentIndex + 1}/${total}`;
-            btnStart.innerText = 'INICIAR';
+            statusDiv.innerHTML = t('paused', {idx: currentIndex + 1, total: total});
+            btnStart.innerText = t('start');
             btnStart.classList.remove('paused');
         }
     }
@@ -583,7 +662,7 @@
         const currentUrl = window.location.href.split('?')[0];
 
         if (currentUrl !== targetUrl) {
-            statusDiv.innerHTML = `🔄 Indo para link ${index + 1}...`;
+            statusDiv.innerHTML = t('going_to', {idx: index + 1});
             setTimeout(() => {
                 window.location.href = targetUrl;
             }, 1000);
@@ -594,7 +673,7 @@
         const currentName = getNameFromUrl(currentUrl);
 
         if (db[currentName] && db[currentName].ended) {
-             statusDiv.innerHTML = '⛔ Sorteio encerrado.';
+             statusDiv.innerHTML = t('closed');
              setTimeout(() => {
                  localStorage.setItem('ig_index', (index + 1).toString());
                  processQueue();
@@ -602,22 +681,22 @@
              return;
         }
 
-        statusDiv.innerHTML = `⚡ Verificando tarefas...`;
+        statusDiv.innerHTML = t('checking');
 
         setTimeout(() => {
             const socialDelay = processSocialButtons();
 
             setTimeout(() => {
-                statusDiv.innerHTML = `⚡ Confirmando status...`;
+                statusDiv.innerHTML = t('confirming');
                 const success = clickMainButton();
 
                 if (success) {
-                    statusDiv.innerHTML = '✅ Confirmado/Participado';
+                    statusDiv.innerHTML = t('success');
                     if(!db[currentName]) db[currentName] = {};
                     db[currentName].participated = true;
                     localStorage.setItem('ig_db', JSON.stringify(db));
                 } else {
-                    statusDiv.innerHTML = '🔎 Tentando participar...';
+                    statusDiv.innerHTML = t('searching');
                 }
 
                 setTimeout(() => {
