@@ -11,7 +11,7 @@
 
 | Step / Passo | Action / Ação | Details / Detalhes |
 | :---: | :--- | :--- |
-| **1** | 🇺🇸 **Install Extension**<br>🇧🇷 **Instalar Extensão** | 🇺🇸 Install a UserScript manager like [Violentmonkey](https://chromewebstore.google.com/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag).<br>🇧🇷 Instale um gerenciador de UserScript como o [Violentmonkey](https://chromewebstore.google.com/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag). |
+| **1** | 🇺🇸 **Install Extension**<br>🇧🇷 **Instalar Extensão** | 🇺🇸 Install a UserScript manager like [Violentmonkey](https://violentmonkey.github.io/get-it/).<br>🇧🇷 Instale um gerenciador de UserScript como o [Violentmonkey](https://violentmonkey.github.io/get-it/). |
 | **2** | 🇺🇸 **Create Script**<br>🇧🇷 **Criar Script** | 🇺🇸 Open extension → Click `+` → Paste the [code](https://github.com/o-giu/instant-gaming-auto-giveaway/blob/main/codigo.js).<br>🇧🇷 Abra a extensão → Clique em `+` → Cole o [código](https://github.com/o-giu/instant-gaming-auto-giveaway/blob/main/codigo.js). |
 | **3** | 🇺🇸 **Save**<br>🇧🇷 **Salvar** | 🇺🇸 Save and ensure the script is active.<br>🇧🇷 Salve e verifique se o script está ativo. |
 
